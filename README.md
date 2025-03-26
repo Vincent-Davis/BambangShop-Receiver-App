@@ -1,3 +1,50 @@
+# Reflection Subscriber-1
+
+## 1. Penggunaan RwLock<> vs Mutex<>
+
+### Alasan Menggunakan RwLock<>
+`RwLock<>` (Read-Write Lock) dipilih dalam kasus ini karena memiliki beberapa keunggulan spesifik:
+
+1. **Konkurensi Baca Tinggi**
+   - Memperbolehkan banyak pembaca mengakses data secara bersamaan
+   - Ideal untuk skenario dengan lebih banyak operasi baca dibandingkan tulis
+   - Meningkatkan performa dalam operasi yang didominasi oleh pembacaan data
+
+2. **Kontrol Akses yang Lebih Detail**
+   - Memisahkan antara kunci baca (`.read()`) dan kunci tulis (`.write()`)
+   - Mencegah modifikasi data selama proses pembacaan berlangsung
+
+### Mengapa Tidak Menggunakan Mutex<>
+Mutex<> memiliki karakteristik berbeda:
+- Hanya mengizinkan satu thread mengakses data pada satu waktu
+- Membatasi konkurensi lebih ketat dibandingkan RwLock<>
+- Kurang efisien untuk operasi dengan banyak pembacaan
+
+## 2. Batasan Mutasi Variabel Statis di Rust
+
+Rust membatasi mutasi variabel statis karena alasan keamanan:
+
+1. **Keamanan Thread (Thread Safety)**
+   - Mencegah data race dan kondisi balapan (race conditions)
+   - Menjamin bahwa perubahan variabel statis tidak mengakibatkan perilaku tidak terduga
+
+2. **Desain Bahasa yang Aman**
+   -Rust menekankan keamanan memori dan pencegahan kesalahan konkuren
+   - Variabel statis dianggap sebagai wilayah kritis yang memerlukan kontrol ketat
+
+3. **Alternatif yang Disediakan**
+   - Penggunaan `lazy_static!` dengan wrapper seperti `RwLock` atau `Mutex`
+   - Memungkinkan mutasi terkontrol melalui mekanisme penguncian
+   - Mendorong pengembang untuk berpikir eksplisit tentang konkurensi
+
+### Perbedaan dengan Java
+Di Java:
+- Variabel statis dapat diubah langsung melalui fungsi statis
+- Kurang ketat dalam kontrol konkurensi
+- Lebih rentan terhadap kondisi balapan
+
+Dalam Rust, pendekatan ini digantikan dengan mekanisme yang lebih aman dan eksplisit, seperti penggunaan `lazy_static!` dengan wrapper sinkronisasi.    
+
 # BambangShop Receiver App
 Tutorial and Example for Advanced Programming 2024 - Faculty of Computer Science, Universitas Indonesia
 
