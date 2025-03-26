@@ -1,3 +1,68 @@
+# Reflection Subscriber-2
+
+## 1. Eksplorasi di Luar Langkah Tutorial: `src/lib.rs`
+
+Dalam file `lib.rs`, terdapat beberapa konsep menarik yang dapat dipelajari:
+
+1. **Konfigurasi Aplikasi Dinamis**
+   - Penggunaan `lazy_static!` untuk inisialisasi konfigurasi statis
+   - Implementasi `AppConfig` dengan mekanisme konfigurasi lingkungan menggunakan `dotenvy` dan `rocket::figment`
+   - Dukungan untuk konfigurasi default dan override melalui variabel lingkungan
+
+2. **Manajemen Error yang Terstruktur**
+   - Tipe alias `Result` dan `Error` untuk penanganan kesalahan yang konsisten
+   - Fungsi `compose_error_response` untuk membuat respons error yang seragam
+   - Penggunaan `Custom` dan `Json` untuk serialisasi error
+
+3. **Konfigurasi Jaringan**
+   - Inisialisasi global `REQWEST_CLIENT` untuk manajemen koneksi HTTP
+   - Konfigurasi URL publisher dan receiver dalam satu struktur
+
+## 2. Kemudahan Penambahan Subscriber dengan Pola Observer
+
+Pola Observer memudahkan penambahan subscriber karena:
+- Tidak memerlukan modifikasi kode inti publisher
+- Setiap subscriber dapat didaftarkan secara independen
+- Sistem notifikasi bersifat longgar (loosely coupled)
+
+### Penambahan Multi-Instance
+- Menambah instance Main App relatif mudah
+- Setiap instance dapat memiliki subscriber berbeda
+- Tidak memerlukan perubahan signifikan pada arsitektur
+
+# 3. Postman Testing and Documentation
+
+## Test and Documentation Efforts
+
+Dalam proses pengembangan Receiver app, saya telah melakukan beberapa upaya untuk meningkatkan pengujian dan dokumentasi:
+
+1. **Postman Collection Testing**
+   - Saya menemukan bahwa koleksi Postman awalnya hanya memiliki satu test case untuk endpoint `/receive`
+   - Test case tersebut hanya mencakup skenario notifikasi dengan status "DELETED"
+   - Saya menambahkan test case baru untuk skenario notifikasi dengan status "CREATED"
+
+2. **Test Case Improvement**
+   - Menambahkan payload baru: Smart Watch X1 dengan status "CREATED"
+   - Memverifikasi bahwa notifikasi berhasil ditambahkan ke daftar pesan
+   - Memastikan format pesan notifikasi sesuai dengan yang diharapkan
+
+3. **Dokumentasi**
+   - Walaupun dokumentasi Postman belum komprehensif, saya mulai mendokumentasikan struktur payload
+   - Menjelaskan berbagai status notifikasi yang mungkin
+   - Memberikan contoh konkret penggunaan endpoint
+
+## Manfaat untuk Pekerjaan
+
+Upaya ini sangat berguna karena:
+- Meningkatkan kejelasan cara kerja sistem notifikasi
+- Memudahkan developer lain memahami API
+- Membantu dalam proses debugging dan pengembangan
+- Menyediakan dokumentasi yang dapat digunakan kembali
+
+## Kesimpulan
+
+Meskipun masih sederhana, proses menambahkan test dan dokumentasi memberikan wawasan yang lebih baik tentang fungsionalitas sistem dan mempersiapkan dasar untuk pengembangan lebih lanjut.
+
 # Reflection Subscriber-1
 
 ## 1. Penggunaan RwLock<> vs Mutex<>
